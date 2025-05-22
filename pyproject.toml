@@ -1,0 +1,17 @@
+[project]
+name = "tidb-vector-bench"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "faiss-cpu>=1.11.0",
+    "h5py>=3.13.0",
+    "matplotlib>=3.10.3",
+    "numpy>=2.2.6",
+    "pandas>=2.2.3",
+    "pymysql>=1.1.1",
+    "ruff>=0.11.10",
+    "sqlalchemy>=2.0.41",
+    "tqdm>=4.67.1",
+]
