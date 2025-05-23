@@ -12,7 +12,6 @@ benchmark:
   batch_size: 1000
   num_queries: 1000  # SIFT1M 的查询向量数量
   top_k: 10
-  use_sift1m: true  # 使用 SIFT1M 数据集
   threads: 4  # 并发测试的线程数
   warmup_queries: 50  # 预热查询次数
 

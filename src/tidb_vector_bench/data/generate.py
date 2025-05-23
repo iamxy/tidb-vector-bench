@@ -149,28 +149,16 @@ def download_sift1m() -> Tuple[np.ndarray, np.ndarray]:
     return base_vectors, query_vectors
 
 def generate_vectors():
-    """生成或下载测试向量数据"""
-    if config["benchmark"].use_sift1m:
-        print("使用 SIFT1M 数据集...")
-        base_vectors, query_vectors = download_sift1m()
-        
-        # 保存到 HDF5 文件
-        with h5py.File("data/vectors.h5", "w") as f:
-            f.create_dataset("vectors", data=base_vectors)
-            f.create_dataset("queries", data=query_vectors)
-        
-        print(f"已保存 {len(base_vectors)} 条基准向量和 {len(query_vectors)} 条查询向量")
-    else:
-        print("生成随机向量数据...")
-        vectors = np.random.randn(
-            config["benchmark"].num_vectors,
-            config["benchmark"].vector_dim
-        ).astype(np.float32)
-        
-        with h5py.File("data/vectors.h5", "w") as f:
-            f.create_dataset("vectors", data=vectors)
-        
-        print(f"已生成 {len(vectors)} 条随机向量")
+    """下载并准备 SIFT1M 数据集"""
+    print("准备 SIFT1M 数据集...")
+    base_vectors, query_vectors = download_sift1m()
+    
+    # 保存到 HDF5 文件
+    with h5py.File("data/vectors.h5", "w") as f:
+        f.create_dataset("vectors", data=base_vectors)
+        f.create_dataset("queries", data=query_vectors)
+    
+    print(f"已保存 {len(base_vectors)} 条基准向量和 {len(query_vectors)} 条查询向量")
 
 def generate_random_vectors(num_vectors: int, dim: int) -> np.ndarray:
     """生成多个随机向量"""

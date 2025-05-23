@@ -111,13 +111,55 @@ def calculate_ndcg(ann_results: List[int], exact_results: Set[int], k: int) -> f
     return dcg / idcg if idcg > 0 else 0.0
 
 def plot_recall_distribution(recalls: np.ndarray, save_path: Path):
-    """绘制召回率分布图"""
-    plt.figure(figsize=(10, 6))
-    plt.hist(recalls, bins=20, alpha=0.7, color='blue')
-    plt.title('Recall Rate Distribution')
-    plt.xlabel('Recall Rate')
-    plt.ylabel('Frequency')
+    """绘制召回率分布图
+    
+    Args:
+        recalls: 召回率数组
+        save_path: 保存路径
+    """
+    plt.figure(figsize=(12, 8))
+    
+    # 绘制直方图
+    n, bins, patches = plt.hist(recalls, bins=20, alpha=0.7, color='blue', 
+                              edgecolor='black', linewidth=1.2)
+    
+    # 添加统计信息
+    mean_recall = np.mean(recalls)
+    median_recall = np.median(recalls)
+    std_recall = np.std(recalls)
+    
+    stats_text = (
+        f"平均召回率: {mean_recall:.4f}\n"
+        f"中位数召回率: {median_recall:.4f}\n"
+        f"标准差: {std_recall:.4f}\n"
+        f"最小值: {np.min(recalls):.4f}\n"
+        f"最大值: {np.max(recalls):.4f}"
+    )
+    
+    # 添加统计信息文本框
+    plt.text(0.95, 0.95, stats_text,
+             transform=plt.gca().transAxes,
+             verticalalignment='top',
+             horizontalalignment='right',
+             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+    
+    # 添加垂直线表示平均值和中位数
+    plt.axvline(mean_recall, color='red', linestyle='--', alpha=0.7, 
+                label=f'平均值: {mean_recall:.4f}')
+    plt.axvline(median_recall, color='green', linestyle='--', alpha=0.7,
+                label=f'中位数: {median_recall:.4f}')
+    
+    # 设置标题和标签
+    plt.title('召回率分布', fontsize=14, pad=20)
+    plt.xlabel('召回率', fontsize=12)
+    plt.ylabel('频次', fontsize=12)
+    
+    # 添加网格和图例
     plt.grid(True, alpha=0.3)
+    plt.legend()
+    
+    # 调整布局并保存
+    plt.tight_layout()
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
 
@@ -289,5 +331,10 @@ def test_recall():
         json.dump(stats, f, indent=2)
     
     logger.info(f"\n结果已保存到: {result_file}")
+    
+    # 生成召回率分布图
+    logger.info("\n生成召回率分布图...")
+    plot_recall_distribution(recalls, results_dir / f"recall_dist_{timestamp}.png")
+    logger.info(f"分布图已保存到: {results_dir}/recall_dist_{timestamp}.png")
     
     return stats

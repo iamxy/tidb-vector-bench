@@ -14,15 +14,13 @@ class DBConfig:
 
 @dataclass
 class BenchmarkConfig:
-    vector_dim: int
-    num_vectors: int
-    batch_size: int
-    num_queries: int
-    top_k: int
-    use_sift1m: bool = False  # 是否使用 SIFT1M 数据集
-    warmup_queries: int = 0
+    vector_dim: int = 128
+    num_vectors: int = 1000000
+    batch_size: int = 1000
+    num_queries: int = 1000
+    top_k: int = 10
     threads: int = 4
-    timeout: int = 30
+    warmup_queries: int = 50
 
 @dataclass
 class MonitorConfig:

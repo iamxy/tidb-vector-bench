@@ -69,25 +69,13 @@ def insert_vectors():
     # 先清空表
     truncate_table()
     
-    if config["benchmark"].use_sift1m:
-        # 读取 SIFT 数据集
-        data_file = Path("data/sift/sift_base.fvecs")
-        if not data_file.exists():
-            raise FileNotFoundError(f"SIFT base vectors file not found: {data_file}")
-        
-        print("读取 SIFT 基准向量...")
-        vectors = read_fvecs(str(data_file))
-    else:
-        # 读取 HDF5 文件
-        data_file = Path("data/vectors.h5")
-        if not data_file.exists():
-            raise FileNotFoundError(f"Vector data file not found: {data_file}")
-        
-        print("读取 HDF5 向量数据...")
-        with h5py.File(data_file, "r") as f:
-            if "vectors" not in f:
-                raise KeyError("Dataset 'vectors' not found in HDF5 file")
-            vectors = f["vectors"][:]
+    # 读取 SIFT 数据集
+    data_file = Path("data/sift/sift_base.fvecs")
+    if not data_file.exists():
+        raise FileNotFoundError(f"SIFT base vectors file not found: {data_file}")
+    
+    print("读取 SIFT 基准向量...")
+    vectors = read_fvecs(str(data_file))
     
     vector_dim = vectors.shape[1]
     
